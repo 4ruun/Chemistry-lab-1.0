@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='style.css'>
+    <title>Salt Analysis for Plus Two</title>
+</head>
+<body>
+    <!-- Start Screen -->
+<div class="start-screen" style="background-image: url('school-bg.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; position: fixed; top: 0; left: 0;">
+    <h1>Salt Analysis for Kerala Syllabus (Plus Two)</h1>
+    <h3>Made by Arun</h3>
+    <button class="button" onclick="startTest()">Start Test</button>
+</div>
+
+    <!-- Salt Selection -->
+    <div class="salt-selection hidden">
+        <h2>Choose a Salt</h2>
+        
+<div class="salt-box" onclick="selectSalt('Sodium Nitrate')">Salt: Sodium Nitrate (NaNO₃)</div>
+
+
+<div class="salt-box" onclick="selectSalt('Sodium Chloride')">Salt: Sodium Chloride (NaCl)</div>
+
+<div class="salt-box" onclick="selectSalt('Sodium Sulphate')">Salt: Sodium Sulphate (Na₂SO₄)</div>
+
+        <div class="salt-box" onclick="selectSalt('Sodium Carbonate')">Salt: Sodium Carbonate (Na₂CO₃)</div>
+        <div class="salt-box" onclick="selectSalt('Ammonium Carbonate')">Salt: Ammonium Carbonate ((NH₄)₂CO₃)</div>
+        <div class="salt-box" onclick="selectSalt('Sodium Acetate')">Salt: Sodium Acetate (NaOAc)</div>
+        <div class="salt-box" onclick="selectSalt('Lead Nitrate')">Salt: Lead Nitrate (Pb(NO₃)₂)</div>
+        
+     <div class="salt-box" onclick="selectSalt('Aluminium Chloride')">Salt: Aluminium Chloride</div>
+   
+     <div class="salt-box" onclick="selectSalt('Copper Chloride')">Salt: Copper Chloride</div>
+     
+     
+     <div class="salt-box" onclick="selectSalt('Barium Chloride')">Salt: Barium Chloride</div>
+ 
+     <div class="salt-box" onclick="selectSalt('Zinc Sulphate')">Salt: Zinc Chloride</div>
+    
+        <div class="salt-box" onclick="selectSalt('Calcium Chloride')">Salt: Calcium Chloride</div>
+    
+     <div class="salt-box" onclick="selectSalt('Magnesium Chloride')">Salt: Magnesium Chloride</div>
+    </div>
+   
+    
+    <!-- Main Lab -->
+    <div class="main-lab hidden" style="background-image: url('lab-bg.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0;">
+     
+        <h2>Virtual Salt Analysis Lab</h2>
+        <p>Selected Salt: <span id="selected-salt"></span></p>
+          <div id="result"></div>
+        <div class="lab">
+            <div class="chemicals">
+              
+                
+               
+    <!-- Existing Chemicals -->
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Conc H₂SO₄">Conc H₂SO₄</div>
+    <div class="nh3rod" draggable="true" ondragstart="startDrag(event)" data-chemical="NH₃ dipped rod">NH₃ dipped rod</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="BaCl₂">BaCl₂</div>
+    <div class="paperball" draggable="true" ondragstart="startDrag(event)" data-chemical="Paper Ball">Paper Ball</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Salt">Salt</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="H₂O">H₂O</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Dil HCl">Dil HCl</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Dil H₂SO₄">Dil H₂SO₄</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Sodium Carbonate">Sodium Carbonate</div>
+
+    <!-- Newly Added Chemicals -->
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Neutral Ferric Chloride">Neutral Ferric Chloride</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="AgNO₃">AgNO₃</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Ferrous Sulphate">Ferrous Sulphate</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Lead Acetate">Lead Acetate</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="H₂S">H₂S</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="HNO₃">HNO₃</div>
+    
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="NH₄Cl">NH₄Cl</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="NH₄OH">NH₄OH</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="NH₄₂CO₃">NH₄₂CO₃</div>
+
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Heat">Heat</div>
+
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="NaOH">NaOH</div>
+
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Potassium chromate">Potassium chromate</div>
+
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Nessler’s reagent">Nessler’s reagent</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Dil Acetic acid">Dil Acetic acid</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Potassium iodide">Potassium iodide</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Conc HCl">Conc HCl</div>
+
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Ammonium oxalate">Ammonium oxalate</div>
+<div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Magneson reagent">Magneson reagent</div>
+    <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Conc HNO₃">Conc HNO₃</div>
+    
+        <div class="chemical-item" draggable="true" ondragstart="startDrag(event)" data-chemical="Cobalt Nitrate">Cobalt Nitrate</div>
+        
+       </div>
+            
+            <div class="burner-container">
+    <div class="circle"  style="background-image: url('fire.gif'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; display: block;"></div>
+     <div class="burner" style="background-image: url('burner.png'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden;display: block;"></div>
+</div>
+<div class="stick"></div>
+<div class="paper"></div>
+
+            <div class="workspace">
+
+                
+                <div class="fumes" 
+            style="background-image: url('fumes.gif'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity:0;"></div>
+              
+                              <div class="bfumes" 
+            style="background-image: url('bfumes.gif'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity:0;"></div>
+              
+              
+              
+                <div class="testtube" style="background-image: url('testtube.png'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0;"  
+                ondrop="dropChemical(event)" ondragover="allowDrop(event)" id="testtube1">
+               
+<div class="brisk-reaction-layer"
+    style="background-image: url('brisk.gif'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity: 0.6; display: hidden;">
+</div>
+<div class="ring-layer"
+    style="background-image: url('ring-layer.png'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity: 0.6; display: hidden;">
+</div>
+<div class="ppt-layer"
+    style="background-color: white; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity: 0.7; display: hidden;">
+</div>
+<div class="gppt-layer"
+    style="background-image: url('gppt.png'); background-size: cover; background-repeat: no-repeat; background-position: center; justify-content: center; align-items: center; color: white; text-align: center; overflow: hidden; top: 0; left: 0; opacity: 1; display: hidden;">
+</div>
+
+                    <div class="content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="button" onclick="resetLab()">Reset</button>
+            <button class="button" onclick="undoLast()">Undo</button>
+        </div>
+        
+    </div>
+</body>
+<script src='script.js'></script>
+</html>
