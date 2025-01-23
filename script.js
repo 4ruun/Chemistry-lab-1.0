@@ -5,15 +5,18 @@ let testTubeContent = [];
 const circle = document.querySelector('.circle');
 const stick = document.querySelector('.stick');
 const paper = document.querySelector('.paper');
+const testtube = document.querySelector('.testtube');
 
-let risDragging = false; 
+let risDragging = false;
 let rdipped = false;
-let pisDragging = false; 
+let pisDragging = false;
 let pdipped = false;
+let tisDragging = false; // For testtube dragging
+let heating = false; // For testtube dipped
 let hue = 360;
 let brightness = 100;
-let contrast = 100; 
-let ashcolor= "paper.png";// Correct way to represent an array of numbers // Change dynamically if needed
+let contrast = 100;
+let ashcolor = "paper.png"; // Correct way to represent an array of numbers
 
 function changeHue(hue, brightness, contrast) {
   circle.style.filter = `hue-rotate(${hue}deg) brightness(${brightness}%) contrast(${contrast}%)`;
@@ -21,7 +24,6 @@ function changeHue(hue, brightness, contrast) {
 function changeAsh(imageUrl) {
   const paper = document.querySelector('.paper');
   paper.style.backgroundImage = `url(${imageUrl})`;
-  
 }
 
 stick.addEventListener('touchstart', (e) => {
@@ -31,8 +33,7 @@ stick.addEventListener('touchstart', (e) => {
   stick.dataset.offsetX = e.touches[0].clientX - stick.offsetLeft;
   stick.dataset.offsetY = e.touches[0].clientY - stick.offsetTop;
 
-  // Prevent text or elements from being highlighted
-  e.preventDefault();
+  e.preventDefault(); // Prevent text or elements from being highlighted
 });
 
 paper.addEventListener('touchstart', (e) => {
@@ -42,27 +43,33 @@ paper.addEventListener('touchstart', (e) => {
   paper.dataset.offsetX = e.touches[0].clientX - paper.offsetLeft;
   paper.dataset.offsetY = e.touches[0].clientY - paper.offsetTop;
 
-  // Prevent text or elements from being highlighted
-  e.preventDefault();
+  e.preventDefault(); // Prevent text or elements from being highlighted
+});
+
+testtube.addEventListener('touchstart', (e) => {
+  tisDragging = true;
+
+  // Store initial touch and testtube positions
+  testtube.dataset.offsetX = e.touches[0].clientX - testtube.offsetLeft;
+  testtube.dataset.offsetY = e.touches[0].clientY - testtube.offsetTop;
+
+  e.preventDefault(); // Prevent text or elements from being highlighted
 });
 
 document.addEventListener('touchmove', (e) => {
   if (risDragging) {
-    e.preventDefault(); // Prevent scrolling on touch move
+    e.preventDefault();
 
-    // Calculate new position for the stick
     const offsetX = stick.dataset.offsetX;
     const offsetY = stick.dataset.offsetY;
 
-    stick.style.position = "absolute"; // Ensure it's absolute
+    stick.style.position = "absolute";
     stick.style.left = `${e.touches[0].clientX - offsetX}px`;
     stick.style.top = `${e.touches[0].clientY - offsetY}px`;
 
-    // Collision detection between stick and circle
     const stickRect = stick.getBoundingClientRect();
     const circleRect = circle.getBoundingClientRect();
-    const testTube = document.querySelector('.testtube');
-    const testTubeRect = testTube.getBoundingClientRect();
+    const testTubeRect = testtube.getBoundingClientRect();
 
     if (
       stickRect.top < circleRect.bottom &&
@@ -70,14 +77,13 @@ document.addEventListener('touchmove', (e) => {
       stickRect.left < circleRect.right &&
       stickRect.right > circleRect.left
     ) {
-      if (rdipped === true) {
+      if (rdipped) {
         changeHue(hue, brightness, contrast);
       }
     } else {
       changeHue(360, 100, 100);
     }
 
-    // Check if the stick is near the test tube (top part)
     if (
       stickRect.bottom > testTubeRect.top &&
       stickRect.top < testTubeRect.top &&
@@ -92,21 +98,18 @@ document.addEventListener('touchmove', (e) => {
   }
 
   if (pisDragging) {
-    e.preventDefault(); // Prevent scrolling on touch move
+    e.preventDefault();
 
-    // Calculate new position for the paper
     const offsetX = paper.dataset.offsetX;
     const offsetY = paper.dataset.offsetY;
 
-    paper.style.position = "absolute"; // Ensure it's absolute
+    paper.style.position = "absolute";
     paper.style.left = `${e.touches[0].clientX - offsetX}px`;
     paper.style.top = `${e.touches[0].clientY - offsetY}px`;
 
-    // Collision detection between paper and circle
     const paperRect = paper.getBoundingClientRect();
     const circleRect = circle.getBoundingClientRect();
-    const testTube = document.querySelector('.testtube');
-    const testTubeRect = testTube.getBoundingClientRect();
+    const testTubeRect = testtube.getBoundingClientRect();
 
     if (
       paperRect.top < circleRect.bottom &&
@@ -114,13 +117,11 @@ document.addEventListener('touchmove', (e) => {
       paperRect.left < circleRect.right &&
       paperRect.right > circleRect.left
     ) {
-  if (pdipped === true) {
+      if (pdipped) {
         changeAsh(ashcolor);
-  }
-  
-     
-}
-    // Check if the paper is near the test tube (top part)
+      }
+    }
+
     if (
       paperRect.bottom > testTubeRect.top &&
       paperRect.top < testTubeRect.top &&
@@ -133,11 +134,61 @@ document.addEventListener('touchmove', (e) => {
       }, 4000);
     }
   }
+
+  // ... (previous code remains unchanged)
+
+let heatingTimeout; // To store the timeout reference
+
+if (tisDragging) {
+    e.preventDefault();
+
+    const offsetX = testtube.dataset.offsetX;
+    const offsetY = testtube.dataset.offsetY;
+
+    testtube.style.position = "absolute";
+    testtube.style.left = `${e.touches[0].clientX - offsetX}px`;
+    testtube.style.top = `${e.touches[0].clientY - offsetY}px`;
+
+    const testTubeRect = testtube.getBoundingClientRect();
+    const circleRect = circle.getBoundingClientRect();
+
+    if (
+      testTubeRect.top < circleRect.bottom &&
+      testTubeRect.bottom > circleRect.top &&
+      testTubeRect.left < circleRect.right &&
+      testTubeRect.right > circleRect.left
+    ) {
+      // If the testtube is inside the circle
+      if (!heating && !heatingTimeout) {
+        
+        // Set a timeout to trigger heating after 5 seconds
+        heatingTimeout = setTimeout(() => {
+          if(!heating){
+          AddChemical("Heat");
+          	heating = true;
+          	console.log("Heating activated after 5 seconds!");
+          }
+          
+          
+          
+        }, 5000); // 5000 milliseconds = 5 seconds
+      }
+    } else {
+      // If the testtube is not inside the circle, clear the timeout
+      if (heatingTimeout) {
+        clearTimeout(heatingTimeout); // Prevent heating if the testtube leaves the circle
+        heatingTimeout = null;
+        console.log("Test tube left the circle, reset.");
+      }
+    }
+}
+// ... (rest of your code remains unchanged)
 });
 
 document.addEventListener('touchend', () => {
-  risDragging = false; // Stop dragging for the stick
-  pisDragging = false; // Stop dragging for the paper
+  risDragging = false;
+  pisDragging = false;
+  tisDragging = false;
 });
 
     function startTest() {
@@ -161,7 +212,7 @@ document.addEventListener('touchend', () => {
         event.preventDefault();
     }
 
-    let currentHeight = 0;
+let currentHeight = 0;
 const MAX_HEIGHT = 160;
 
 function dropChemical(event) {
@@ -179,7 +230,8 @@ function dropChemical(event) {
     if (chemical) {
         newChemicalDiv.style.backgroundColor = '#49ceff3e';
     }
-
+    
+    
     // Check if adding the new chemical would exceed MAX_HEIGHT
     if (currentHeight + 17 <= MAX_HEIGHT) {
         newChemicalDiv.style.height = '17px';
@@ -198,7 +250,17 @@ function dropChemical(event) {
 
     analyzeReaction(testTubeContent);
 }
+function AddChemical(chemicalName) {
+    const mockEvent = { 
+        preventDefault: () => {}, 
+        dataTransfer: { getData: () => chemicalName } // Mock the getData method to return the chemical name
+    };
 
+    const testTube = document.querySelector('.testtube'); // Target the test tube element
+    mockEvent.target = testTube; // Set the test tube as the event target
+
+    dropChemical(mockEvent); // Call the existing dropChemical function
+}
     const salts = [
         { id: 1, name: 'Sodium Nitrate', anion: 'Nitrate', cation: 'Sodium' },
         { id: 2, name: 'Sodium Chloride', anion: 'Chlorine', cation: 'Sodium' },
