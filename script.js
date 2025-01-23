@@ -502,8 +502,8 @@ else if (salt.cation === 'Ammonium' && content.includes("NaOH") && content.inclu
 } 
 
 else if ((salt.cation === 'Lead' || salt.cation ==='Barium')&& content.includes("Dil Acetic acid") && content.includes("Potassium chromate") && content.includes("H₂O")) {
-    resultDiv.innerText = `White precipitate forms (Lead /barium cation identified).`;
-    showPpt("white", 0.8);
+    resultDiv.innerText = `Yellow precipitate forms (Lead /barium cation identified).`;
+    showPpt("yellow", 0.8);
 } else if (salt.cation === 'Lead' && content.includes("Potassium iodide") && content.includes("H₂O")) {
     resultDiv.innerText = `Yellow precipitate forms (Lead cation confirmed).`;
     showPpt("yellow", 0.8);
