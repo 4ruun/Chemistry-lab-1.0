@@ -698,36 +698,106 @@ else {
 }
 
 function resetLab() {
-          currentHeight=0
-    // Clear the test tube content and reset the display
-    const testTube = document.querySelector('.testtube'); // Select the test-tube element
-        const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
-    
-      reactionLayer.style.opacity = 0; 
-      reactionLayer.style.display = 'none';
-    ashcolor = "paper.png";
-    changeAsh(ashcolor)
-    hue = 360;         // Green hue
-    brightness = 100;   // High brightness for a pale look
-    contrast = 100; 
+    // Reset test tube content
     testTubeContent = [];
-    document.getElementById('testtube1').querySelector('.content').innerHTML = "";
+    currentHeight = 0;
+
+    // Reset displayed content inside test tube
+    const testTube = document.querySelector('.testtube');
+    const contentDiv = testTube.querySelector('.content');
+    contentDiv.innerHTML = "";
+    contentDiv.style.height = "0px"; // Shrink back to empty state
+    contentDiv.style.overflowY = "hidden"; // Prevent unnecessary scrolling
+
+    // Reset visual effects
+    const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
+    const pptLayer = testTube.querySelector('.ppt-layer');
+    const gpptLayer = testTube.querySelector('.gppt-layer');
+    const ringLayer = testTube.querySelector('.ring-layer');
+    const fumes = document.querySelector('.fumes');
+    const bfumes = document.querySelector('.bfumes');
+
+    
+    reactionLayer.style.display = 'none';
+    pptLayer.style.display = 'none';
+    gpptLayer.style.display = 'none';
+    ringLayer.style.display = 'none';
+    fumes.style.display = 'none';
+    bfumes.style.display = 'none';
+
+    // Reset flame effects
+    hue = 360;
+    brightness = 100;
+    contrast = 100;
+
+    // Reset ash color
+    ashcolor = "paper.png";
+    changeAsh(ashcolor);
+    ashcolor = "brown-ash.png";
+    // Reset UI elements like results, salt selection, and test tube positioning
     document.getElementById('result').innerText = "";
     
+    // Reset dragging-related flags
+    risDragging = false;
+    pisDragging = false;
+    tisDragging = false;
+    rdipped = false;
+    pdipped = false;
+    heating = false;
+
+    // Reset the test tube's position (if draggable)
+    testTube.style.position = "static";
+    testTube.style.left = "";
+    testTube.style.top = "";
+
+    // Reset start screens if needed
+   
+    console.log("Lab fully reset!");
 }
 
 function undoLast() {
-  const testTube = document.querySelector('.testtube'); // Select the test-tube element
-        const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
-    // Remove the most recent chemical added
-    testTubeContent.shift();  // Remove from the top (upward stack)
-     reactionLayer.style.opacity = 0; 
-       reactionLayer.style.display = 'none'; 
-    // Re-render the test tube content with remaining chemicals
-    const contentDiv = document.getElementById('testtube1').querySelector('.content');
-    contentDiv.innerHTML = testTubeContent.join("<br>");
-    currentHeight = currentHeight-30
-    // Re-analyze the reaction with updated content
-    analyzeReaction(testTubeContent);
-}
+    if (testTubeContent.length === 0) {
+        console.log("Nothing to undo.");
+        return; // If no chemicals are present, do nothing
+    }
+
+    // Remove the most recently added chemical
+    testTubeContent.shift();  
+
+    // Update test tube content display
+    const testTube = document.querySelector('.testtube');
+    const contentDiv = testTube.querySelector('.content');
+    contentDiv.innerHTML = testTubeContent.map(chem => `<div style="background-color: #49ceff3e; height: 17px;">${chem}</div>`).join("");
     
+    // Adjust height if possible
+    currentHeight = Math.max(0, currentHeight - 17);
+    contentDiv.style.height = currentHeight + "px";
+    
+    // Re-analyze reaction with remaining chemicals
+    analyzeReaction(testTubeContent);
+
+    // Reset all possible visual effects if no chemicals are left
+    if (testTubeContent.length === 0) {
+        const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
+        const pptLayer = testTube.querySelector('.ppt-layer');
+        const gpptLayer = testTube.querySelector('.gppt-layer');
+        const ringLayer = testTube.querySelector('.ring-layer');
+        const fumes = document.querySelector('.fumes');
+        const bfumes = document.querySelector('.bfumes');
+
+        reactionLayer.style.opacity = 0;
+        reactionLayer.style.display = 'none';
+        pptLayer.style.display = 'none';
+        gpptLayer.style.display = 'none';
+        ringLayer.style.display = 'none';
+        fumes.style.display = 'none';
+        bfumes.style.display = 'none';
+
+        // Reset flame effects
+        hue = 360;
+        brightness = 100;
+        contrast = 100;
+    }
+
+    console.log("Last action undone.");
+}
