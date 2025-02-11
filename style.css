@@ -160,11 +160,11 @@ h1, h2, h3 {
 .content {
     position: absolute;
     bottom: 0;
-    width: 200%;
+    width: 176%;
     color: white;
     font-size: 6px;
     overflow-y: auto;
-    transform: scale(0.5) translateX(-20px);
+    transform: scale(0.5) translateX(-24px);
     line-height: 7px;
     transition: height 0.3s ease;
     letter-spacing: -1px;
