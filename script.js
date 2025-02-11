@@ -16,7 +16,7 @@ let heating = false; // For testtube dipped
 let hue = 360;
 let brightness = 100;
 let contrast = 100;
-let ashcolor = "paper.png"; // Correct way to represent an array of numbers
+let ashcolor = "brown-ash.png"; // Correct way to represent an array of numbers
 
 function changeHue(hue, brightness, contrast) {
   circle.style.filter = `hue-rotate(${hue}deg) brightness(${brightness}%) contrast(${contrast}%)`;
@@ -343,246 +343,358 @@ const testTube = document.querySelector('.testtube');
  function analyzeReaction(content) {
     const resultDiv = document.getElementById('result');
     const salt = selectedSalt;
-const testTube = document.querySelector('.testtube'); // Select the test-tube element
-        const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
-        
-    // Reaction only happens after adding salt
+    const testTube = document.querySelector('.testtube'); 
+    const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
+
     if (!content.includes('Salt')) {
         resultDiv.innerText = "";
         return;
     }
 
-    // Check for specific anion and cation-based reactions
-
-    // Soate (Carbonate Anion)
+    // **Carbonate Anion Test** (Sodium Carbonate / Ammonium Carbonate)
     if (salt.anion === 'Carbonate' && content.includes("Dil HCl")) {
         resultDiv.innerText = `Bubbles observed (CO₂ gas evolved, Carbonate Anion identified).`;
-         // Get the reaction layer
-       
-       reactionLayer.style.display = 'block'; 
-
+        reactionLayer.style.display = 'block'; 
     }
-    
-    // Ammonium Carbonate (Carbonate Anion)
-  
-    
-    // Sodium Nitrate (Nitrate Anion) with Conc H₂SO₄ and Paper Ball
+
+    // **Nitrate Anion Test**
     else if (salt.anion === 'Nitrate' && content.includes("Conc H₂SO₄") && content.includes("Paper Ball")) {
         resultDiv.innerText = `Brown fumes (NO₂ gas produced, Nitrate Anion identified).`;
         showBFumes(1);
-        showPpt('#392e21',0.7)
+        showPpt('#392e21', 0.7);
     }
-    
-    else if (salt.anion === 'Nitrate' && content.includes("Conc H₂SO₄") && content.includes("H₂O")&& content.includes("Ferrous Sulphate")) {
-        resultDiv.innerText = `Brown ring formed ( Nitrate Anion).`;
-        
-        const testTube = document.querySelector('.testtube');
+    else if (salt.anion === 'Nitrate' && content.includes("Conc H₂SO₄") && content.includes("H₂O") && content.includes("Ferrous Sulphate")) {
+        resultDiv.innerText = `Brown ring formed (Nitrate Anion confirmed).`;
         const ringLayer = testTube.querySelector('.ring-layer');
         ringLayer.style.opacity = 0.9; 
-      ringLayer.style.display = 'block';
+        ringLayer.style.display = 'block';
     }
-    // Sodium Acetate (Acetate Anion) with Dil H₂SO₄
+
+    // **Acetate Anion Test**
     else if (salt.anion === 'Acetate' && content.includes("Dil H₂SO₄")) {
-        resultDiv.innerText = `Vinegar smell (Acetate Anion identified).`;
-    }///eror ann
-    
+        resultDiv.innerText = `Vinegar smell detected (Acetate Anion identified).`;
+    }
     else if (salt.anion === 'Acetate' && content.includes("Neutral Ferric Chloride") && content.includes("H₂O")) {
-        resultDiv.innerText = `Deep red ppt(Acetate Anion).`;
-        showPpt('#b60000',0.7)
+        resultDiv.innerText = `Deep red solution (Acetate Anion confirmed).`;
+        showPpt('#b60000', 0.7);
     }
-    
-    // Sodium Chloride (Chlorine Anion) with Conc H₂SO₄ and NH₃ rdipped rod
-    // Sodium Chloride (Chlorine Anion) with Conc H₂SO₄ and NH₃ dipped rod
-else if (salt.anion === 'Chlorine' && content.includes("Conc H₂SO₄")) {
-    // Check if both Conc H₂SO₄ and NH₃ dipped rod are included
-    if (content.includes("NH₃ dipped rod")) {
-        resultDiv.innerText = `White fumes (HCl gas evolved, Chlorine Anion identified).`;
-        showFumes(0.8); // Display white fumes with specific opacity
-    } else {
-        resultDiv.innerText = `Pungent smell (HCl gas evolved). NH₃ dipped rod needed to confirm Chlorine Anion.`;
-        showFumes(0.5); // Display faint fumes
+
+    // **Chloride Anion Test**
+    else if (salt.anion === 'Chlorine' && content.includes("Conc H₂SO₄")) {
+        if (content.includes("NH₃ dipped rod")) {
+            resultDiv.innerText = `White fumes (HCl gas evolved, Chloride Anion identified).`;
+            showFumes(0.8);
+        } else {
+            resultDiv.innerText = `Pungent smell (HCl gas evolved). NH₃ dipped rod needed for confirmation.`;
+            showFumes(0.5);
+        }
     }
+    else if (salt.anion === 'Chlorine' && content.includes("HNO₃") && content.includes("AgNO₃") && content.includes("H₂O")) {
+        resultDiv.innerText = `White precipitate (Chloride Anion confirmed).`;
+        showPpt('white', 0.8);
+    }
+
+    // **Sulfate Anion Test**
+    else if (salt.anion === 'Sulfate' && content.includes("BaCl₂")) {
+        if (content.includes("Dil HCl")) {
+            resultDiv.innerText = `White precipitate dissolves (No Sulfate Anion).`;
+            showPpt('white', 0.0);
+        } else {
+            resultDiv.innerText = `White precipitate (Sulfate Anion identified).`;
+            showPpt('white', 0.7);
+        }
+    }
+    else if (salt.anion === 'Sulfate' && content.includes("Lead Acetate") && content.includes("H₂O")) {
+        resultDiv.innerText = `White precipitate (Sulfate Anion confirmed).`;
+        showPpt('white', 0.7);
+    }
+
+    // **Sulfite Anion Test**
+    else if (salt.anion === 'Sulfite' && content.includes("Dil H₂SO₄")) {
+        resultDiv.innerText = `Pungent SO₂ gas evolved (Sulfite Anion identified).`;
+        showFumes(0.6);
+    }
+    else if (salt.anion === 'Sulfite' && content.includes("BaCl₂") && content.includes("H₂O")) {
+        if (content.includes("Dil HCl")) {
+            resultDiv.innerText = `White precipitate dissolves (Sulfite Anion confirmed).`;
+            showPpt('white', 0.0);
+        } else {
+            resultDiv.innerText = `White precipitate (Possible Sulfite or Sulfate Anion).`;
+            showPpt('white', 0.7);
+        }
+    }
+
+    // **Phosphate Anion Test**
+    else if (salt.anion === 'Phosphate' && content.includes("Ammonium Molybdate") && content.includes("Conc HNO₃") && content.includes("H₂O")) {
+        resultDiv.innerText = `Yellow precipitate (Phosphate Anion confirmed).`;
+        showPpt('yellow', 0.8);
+    }
+
+    // **Borate Anion Test**
+    else if (salt.anion === 'Borate' && content.includes("H₂SO₄") && content.includes("Methanol") && content.includes("Heat")) {
+        resultDiv.innerText = `Green flame observed (Borate Anion confirmed).`;
+    }
+
+    // **Cyanide Anion Test**
+    else if (salt.anion === 'Cyanide' && content.includes("Conc HCl") && content.includes("Ferrous Sulphate") && content.includes("H₂O")) {
+        resultDiv.innerText = `Prussian blue precipitate (Cyanide Anion identified).`;
+        showPpt('#003366', 0.8);
+    }
+
+    // **Thiosulfate Anion Test**
+    else if (salt.anion === 'Thiosulfate' && content.includes("Dil HCl")) {
+        resultDiv.innerText = `Sulfur precipitate and SO₂ gas evolved (Thiosulfate Anion identified).`;
+        showPpt('yellow', 0.7);
+        showFumes(0.5);
+    }
+
+// **Ammonium Cation Test**
+else if (salt.cation === 'Ammonium' && content.includes("Sodium Carbonate") && content.includes("H₂O")) {
+    resultDiv.innerText = `No precipitate (Group 0 identified).`;
 }
-
-else if (salt.anion === 'Chlorine' && content.includes("HNO₃") && content.includes("AgNO₃") && content.includes("H₂O")) {
-        resultDiv.innerText = `White ppt.`;
-        
-        showPpt('white',0.8)
-    }
-    // Sulfate Anion (BaCl₂ test for sulfate)
-    
-else if ((salt.anion === 'Sulfate' || salt.anion === 'Carbonate') && content.includes("BaCl₂")) {
-    // Your logic here
-
-    // Check if both Conc H₂SO₄ and NH₃ dipped rod are included
+else if (salt.cation === 'Ammonium' && content.includes("Nessler’s reagent") && content.includes("H₂O")) {
+    resultDiv.innerText = `Brown precipitate forms (Ammonium Cation confirmed).`;
+    showPpt("#392c1e", 0.9);
+}
+    // **Default Case (No Reaction)**
+    else if (salt.cation === 'Ammonium' && content.includes("NaOH") && content.includes("Heat") && content.includes("H₂O")) {
     if (content.includes("Dil HCl")) {
-        resultDiv.innerText = `White ppt diluted.`;
-        
-        showPpt('white',0.0)
-    } else {
-      showPpt('white',0.7)
-        resultDiv.innerText = `white ppt formed.`;
-         // Partial opacity (0.5) when only Conc H₂SO₄ is present
-    }
-}
-else if (salt.anion === 'Sulfate' && content.includes("Lead Acetate") && content.includes("H₂O")){
-  showPpt('white',7.0)
-        resultDiv.innerText = `White ppt (sulphate).`;
-    }
-
-
-    // Ammonium Carbonate (Ammonium Cation) with NaOH and H₂O
-    else if (salt.cation === 'Ammonium' && content.includes("Sodium Carbonate") && content.includes("H₂O")) {
-        resultDiv.innerText = `No ppt, Ammonium Cation identified).`;
-    }
-    
-else if (salt.cation === 'Copper' && content.includes("H₂O") && content.includes("H₂S")&& content.includes("Dil HCl")) {
-        resultDiv.innerText = `black ppt( copper).`;
-   showPpt('black',0.8)     
-}
-    
-else if (salt.cation === 'Aluminium' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂O")) {
-        resultDiv.innerText = `White gelatinous ppt( Aluminium).`;
-        const testTube = document.querySelector('.testtube');
-   const gpptLayer = testTube.querySelector('.gppt-layer');
-    gpptLayer.style.display = 'block';
-    
-}
-
-if ((salt.cation === 'Barium' || salt.cation === 'Calcium') && 
-    content.includes("NH₄Cl") && 
-    content.includes("NH₄OH") && 
-    content.includes("NH₄₂CO₃") && content.includes("H₂O")) {
-        
-    resultDiv.innerText = `White crystalline ppt (Barium/Calcium).`;
-    const testTube = document.querySelector('.testtube');
-    // const gpptLayer = testTube.querySelector('.gppt-layer');
-    // gpptLayer.style.display = 'block';
-}else if (salt.cation === 'Zinc' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂S") && content.includes("H₂O")) {
-        resultDiv.innerText = `White ppt( Zinc).`;
-        showPpt("white",0.8)
-    
-}
-else if (salt.cation === 'Magnesium' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂O")) {
-        resultDiv.innerText = `White crystalline ppt(Magnesium).`;
-        const testTube = document.querySelector('.testtube');
-   const gpptLayer = testTube.querySelector('.gppt-layer');
-    gpptLayer.style.display = 'block';
-}
-
-    // Lead Nitrate (Lead Cation) with BaCl₂
-    else if (salt.cation === 'Lead' && content.includes("Dil HCl") && content.includes("H₂O")) {
-        resultDiv.innerText = `White precipitate (Group I cation lead).`;
-        showPpt('white',0.8)
-    }
-
-    // Sodium (Sodium Cation) with NaOH
-    else if (salt.cation === 'Sodium' && content.includes("NaOH") && content.includes("H₂O")) {
-        resultDiv.innerText = `No visible reaction (Sodium Cation identified).`;
-    }
-
-
-
-
-
-/// cation identification and conformation
-////////////////////
-else if (salt.cation === 'Ammonium' && content.includes("NaOH") && content.includes("Heat") && content.includes("H₂O")) {
-    if (content.includes("Dil HCl")) {
-        resultDiv.innerText = `Pungent smell of ammonia gas evolves, and white fumes form when dilute HCl is added.`;
-      
+        resultDiv.innerText = `Pungent smell of ammonia gas evolves, and white fumes form when dilute HCl is added (Ammonium Cation confirmed).`;
         showFumes(1);
     } else {
-        resultDiv.innerText = `Pungent smell of ammonia gas evolves`;
+        resultDiv.innerText = `Pungent smell of ammonia gas evolves (Ammonium Cation identified).`;
     }
-
-} else if (salt.cation === 'Ammonium' && content.includes("Nessler’s reagent") && content.includes("H₂O")) {
-    resultDiv.innerText = `Brown precipitate forms (Ammonium cation confirmed).`;
+}
+else if (salt.cation === 'Ammonium' && content.includes("Nessler’s reagent") && content.includes("H₂O")) {
+    resultDiv.innerText = `Brown precipitate forms (Ammonium Cation confirmed).`;
     showPpt("#392c1e", 0.9);
-} 
-
-else if ((salt.cation === 'Lead' || salt.cation ==='Barium')&& content.includes("Dil Acetic acid") && content.includes("Potassium chromate") && content.includes("H₂O")) {
-    resultDiv.innerText = `Yellow precipitate forms (Lead /barium cation identified).`;
-    showPpt("yellow", 0.8);
-} else if (salt.cation === 'Lead' && content.includes("Potassium iodide") && content.includes("H₂O")) {
-    resultDiv.innerText = `Yellow precipitate forms (Lead cation confirmed).`;
-    showPpt("yellow", 0.8);
 }
 
+// **Lead Cation Test**
+else if ((salt.cation === 'Lead' || salt.cation === 'Barium') && content.includes("Dil Acetic acid") && content.includes("Potassium chromate") && content.includes("H₂O")) {
+    resultDiv.innerText = `Yellow precipitate (Lead/Barium Cation identified).`;
+    showPpt("yellow", 0.8);
+}
+else if (salt.cation === 'Lead' && content.includes("Potassium iodide") && content.includes("H₂O")) {
+    resultDiv.innerText = `Yellow precipitate (Lead Cation confirmed).`;
+    showPpt("yellow", 0.8);
+}
+else if (salt.cation === 'Lead' && content.includes("Dil HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Group 1 Cation Pb).`;
+    showPpt('white', 0.8);
+}
+
+// **Copper Cation Test**
+else if (salt.cation === 'Copper' && content.includes("H₂O") && content.includes("H₂S") && content.includes("Dil HCl")) {
+    resultDiv.innerText = `Black precipitate (Copper Cation identified).`;
+    showPpt('black', 0.8);
+}
 else if (salt.cation === 'Copper' && content.includes("NH₄OH") && content.includes("H₂O")) {
-    resultDiv.innerText = `Pale Blue precipitate  (Copper cation identified).`;
+    resultDiv.innerText = `Pale blue precipitate (Copper Cation identified).`;
     showPpt("#4d95e6", 0.8);
-    
-    
-} else if (salt.cation === 'Copper' && content.includes("Conc HCl") && content.includes("H₂O")) {
-  hue=130;
-  brightness=100;
-  contrast=100;
-    resultDiv.innerText = `Blue-green flame observed (Copper cation confirmed).`;
-    
 }
-else if (salt.cation === 'Calcium' && content.includes("Conc HCl") && content.includes("H₂O")) {
-    resultDiv.innerText = `Brick red flame observed (Calcium cation confirmed).`;
-    hue = 0;          // Adjusted to pure red
-		brightness = 30;  // Reduced for darker appearance
-		contrast = 100;   // Retained for vibrant dark red
-    
-} else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
-    resultDiv.innerText = `pale green flame observed (Barium cation).`;
-    hue = 120;         // Green hue
-    brightness = 125;   // High brightness for a pale look
-    contrast = 80;     // Slightly reduced contrast for softness
 
-	
-}else if (salt.cation === 'Aluminium' && content.includes("NaOH") && content.includes("H₂O")) {
-    resultDiv.innerText = `White gelatinous precipitate (Aluminium cation identified).`;
-    const testTube = document.querySelector('.testtube');
+// **Aluminium Cation Test**
+else if (salt.cation === 'Aluminium' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂O")) {
+    resultDiv.innerText = `White gelatinous precipitate (Group 3 identified).`;
     const gpptLayer = testTube.querySelector('.gppt-layer');
     gpptLayer.style.display = 'block';
-    
-} else if (salt.cation === 'Aluminium' &&  content.includes("Conc HNO₃") && content.includes("Cobalt Nitrate") && content.includes("Heat") && content.includes("H₂O")) {
-    resultDiv.innerText = `Blue ash forms on heating with cobalt nitrate (Aluminium cation confirmed).`;
-    ashcolor= "blue-ash.png"
+}
+else if (salt.cation === 'Aluminium' && content.includes("Conc HNO₃") && content.includes("Cobalt Nitrate") && content.includes("Heat") && content.includes("H₂O")) {
+    resultDiv.innerText = `Blue residue forms (Aluminium Cation confirmed).`;
+    ashcolor = "blue-ash.png";
+}
+else if (salt.cation === 'Aluminium' && content.includes("NaOH") && content.includes("H₂O")) {
+    resultDiv.innerText = `White gelatinous precipitate (Aluminium Cation identified).`;
+    const gpptLayer = testTube.querySelector('.gppt-layer');
+    gpptLayer.style.display = 'block';
+}
+
+// **Zinc Cation Test**
+else if (salt.cation === 'Zinc' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂S") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Group 4 Cation Zn identified).`;
+    showPpt("white", 0.8);
 }
 else if (salt.cation === 'Zinc' && content.includes("Conc HNO₃") && content.includes("Cobalt Nitrate") && content.includes("Heat") && content.includes("H₂O")) {
-    resultDiv.innerText = `Green ash forms on heating with cobalt nitrate (Zinc cation confirmed).`;
-    ashcolor= "green-ash.png"
+    resultDiv.innerText = `Green residue forms (Zinc Cation confirmed).`;
+    ashcolor = "green-ash.png";
 }
-else if (salt.cation === 'Magnesium' && content.includes("Conc HNO₃") && content.includes("Cobalt Nitrate") && content.includes("H₂O")&& content.includes("Heat")) {
-    resultDiv.innerText = `pink ash forms (Magnesium cation confirmed).`;
-    ashcolor= "pink-ash.png"
-}
-
 else if (salt.cation === 'Zinc' && content.includes("NaOH") && content.includes("H₂O")) {
-    resultDiv.innerText = `White precipitate forms (Zinc cation identified).`;
+    resultDiv.innerText = `White precipitate (Zinc Cation identified).`;
     showPpt("white", 0.8);
-    
-} 
+}
 
+// **Magnesium Cation Test**
+else if (salt.cation === 'Magnesium' && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂O")) {
+    resultDiv.innerText = `White crystalline precipitate (Group 4 cation Magnesium).`;
+    const gpptLayer = testTube.querySelector('.gppt-layer');
+    gpptLayer.style.display = 'block';
+}
+else if (salt.cation === 'Magnesium' && content.includes("Conc HNO₃") && content.includes("Cobalt Nitrate") && content.includes("H₂O") && content.includes("Heat")) {
+    resultDiv.innerText = `Pink residue forms (Magnesium Cation confirmed).`;
+    ashcolor = "pink-ash.png";
+}
+else if (salt.cation === 'Magnesium' && content.includes("Magneson reagent") && content.includes("NaOH") && content.includes("H₂O")) {
+    resultDiv.innerText = `Blue precipitate (Magnesium Cation confirmed).`;
+    showPpt("#0a6aff", 0.9);
+}
+
+// **Calcium Cation Test**
 else if (salt.cation === 'Calcium' && content.includes("NH₄OH") && content.includes("NH₄Cl") && content.includes("Ammonium oxalate") && content.includes("H₂O")) {
-    resultDiv.innerText = `White precipitate (Calcium cation identified).`;
-    showPpt("white",0.9)
-}
-else if (salt.cation === 'Magnesium' && content.includes("Magneson reagent") && content.includes("NaOH") && content.includes("H₂O")) {
-   resultDiv.innerText = `Blue precipitate (Magnesium cation confirmed).`;
-    showPpt("#0a6aff", 0.9);
-    
-}
-    
-
-else if (salt.cation === 'Magnesium' && content.includes("Magneson reagent") && content.includes("NaOH") && content.includes("H₂O")) {
-    resultDiv.innerText = `Blue precipitate forms (Magnesium cation confirmed).`;
-    showPpt("#0a6aff", 0.9);
+    resultDiv.innerText = `White precipitate (group 5 calcium Cation identified).`;
+    showPpt("white", 0.9);
 }
 
+// **Barium & Calcium Cation Test**
+else if ((salt.cation === 'Barium' || salt.cation === 'Calcium') && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("NH₄₂CO₃") && content.includes("H₂O")) {
+    resultDiv.innerText = `White crystalline precipitate (Barium/Calcium Cation identified).`;
+}
+
+// **Sodium Cation Test**
+else if (salt.cation === 'Sodium' && content.includes("NaOH") && content.includes("H₂O")) {
+    resultDiv.innerText = `No visible reaction (Sodium Cation identified).`;
+}
 
 
 
+// Flame test
+else if (salt.cation === 'Calcium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Brick red flame (Calcium Cation confirmed).`;
+    hue = 0;          // Adjusted to pure red
+		brightness = 30;  // Reduced for darker appearance
+		contrast = 100;
+}
+else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Pale green flame  (Barium Cation confirmed).`;
+    hue = 120;         // Green hue
+    brightness = 125;   // High brightness for a pale look
+    contrast = 80;  
+}
+// **Default Case (No Reaction)**
+else if ((salt.cation === 'Copper' || salt.cation === 'Cadmium') && content.includes("H₂S") && content.includes("Dil HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Black precipitate (Copper/Cadmium identified as Group 2 cation).`;
+    showPpt('black', 0.8);
+}
 
-    // Default message if no specific reaction matches
-    else {
-        resultDiv.innerText = `No visible reaction detected.`;
+// **Group 2: Copper (II) & Bismuth (III) - H₂S in Dil HCl Medium**
+else if ((salt.cation === 'Copper' || salt.cation === 'Bismuth') && content.includes("H₂S") && content.includes("Dil HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Black precipitate (Copper/Bismuth Cation - Group 2 Identified).`;
+    showPpt("black", 0.8);
+}
+
+// **Group 2: Bismuth (III) Confirmation - NaOH Test**
+else if (salt.cation === 'Bismuth' && content.includes("NaOH") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate dissolves in excess NaOH (Bismuth Cation Confirmed).`;
+    showPpt("white", 0.8);
+}
+
+// **Group 3: Aluminium & Iron (III) - NH₄OH in NH₄Cl Medium**
+else if ((salt.cation === 'Aluminium' || salt.cation === 'Iron(III)') && content.includes("NH₄Cl") && content.includes("NH₄OH") && content.includes("H₂O")) {
+    if (salt.cation === 'Aluminium') {
+        resultDiv.innerText = `White gelatinous precipitate (Aluminium Cation - Group 3 Identified).`;
+        showPpt("white", 0.8);
+    } else if (salt.cation === 'Iron(III)') {
+        resultDiv.innerText = `Reddish-brown precipitate (Iron(III) Cation - Group 3 Identified).`;
+        showPpt("#8b0000", 0.8);
     }
+}
+
+// **Iron (III) Confirmation - Potassium Ferrocyanide Test**
+else if (salt.cation === 'Iron(III)' && content.includes("K₄[Fe(CN)₆]") && content.includes("H₂O")) {
+    resultDiv.innerText = `Prussian blue precipitate (Iron(III) Cation Confirmed).`;
+    showPpt("#003366", 0.9);
+}
+
+// **Group 4: Zinc & Manganese - H₂S in NH₄OH Medium**
+else if ((salt.cation === 'Zinc' || salt.cation === 'Manganese') && content.includes("H₂S") && content.includes("NH₄OH") && content.includes("H₂O")) {
+    if (salt.cation === 'Zinc') {
+        resultDiv.innerText = `White precipitate (Zinc Cation - Group 4 Identified).`;
+        showPpt("white", 0.8);
+    } else if (salt.cation === 'Manganese') {
+        resultDiv.innerText = `Light pink precipitate (Manganese Cation - Group 4 Identified).`;
+        showPpt("#ff69b4", 0.8);
+    }
+}
+
+// **Manganese Confirmation - Sodium Bismuthate Test**
+else if (salt.cation === 'Manganese' && content.includes("Sodium Bismuthate") && content.includes("HNO₃") && content.includes("H₂O")) {
+    resultDiv.innerText = `Purple solution (Manganese Cation Confirmed).`;
+}
+
+// **Group 5: Calcium, Strontium, Barium - (NH₄)₂CO₃ in NH₄OH Medium**
+else if ((salt.cation === 'Calcium' || salt.cation === 'Strontium' || salt.cation === 'Barium') && 
+    content.includes("NH₄OH") && content.includes("NH₄Cl") && content.includes("(NH₄)₂CO₃") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Group 5 Cation Identified - Ca²⁺, Sr²⁺, Ba²⁺).`;
+    showPpt("white", 0.8);
+}
+
+// **Strontium Confirmation - Ammonium Sulfate Test**
+else if (salt.cation === 'Strontium' && content.includes("Ammonium Sulfate") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Strontium Cation Confirmed).`;
+    showPpt("white", 0.8);
+}
+
+// **Group 6: Magnesium - NH₄OH in NH₄Cl Medium**
+else if (salt.cation === 'Magnesium' && content.includes("NH₄OH") && content.includes("NH₄Cl") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Magnesium Cation - Group 6 Identified).`;
+    showPpt("white", 0.8);
+}
+
+// **Magnesium Confirmation - Sodium Phosphate Test**
+else if (salt.cation === 'Magnesium' && content.includes("Na₂HPO₄") && content.includes("NH₄OH") && content.includes("H₂O")) {
+    resultDiv.innerText = `White crystalline precipitate (Magnesium Cation Confirmed).`;
+    showPpt("white", 0.9);
+}
+
+// **Lithium Identification - NaOH Test**
+else if (salt.cation === 'Lithium' && content.includes("NaOH") && content.includes("H₂O")) {
+    resultDiv.innerText = `No precipitate (Lithium Cation Identified).`;
+}
+
+// **Lithium Confirmation - Sodium Cobaltinitrite Test**
+else if (salt.cation === 'Lithium' && content.includes("Sodium Cobaltinitrite") && content.includes("H₂O")) {
+    resultDiv.innerText = `Yellow precipitate (Lithium Cation Confirmed).`;
+    showPpt("yellow", 0.8);
+}
+
+// **Rubidium & Cesium Identification - Cobaltinitrite Test**
+else if ((salt.cation === 'Rubidium' || salt.cation === 'Cesium') && content.includes("Sodium Cobaltinitrite") && content.includes("H₂O")) {
+    if (salt.cation === 'Rubidium') {
+        resultDiv.innerText = `Yellow precipitate (Rubidium Cation Identified).`;
+        showPpt("yellow", 0.8);
+    } else if (salt.cation === 'Cesium') {
+        resultDiv.innerText = `Orange precipitate (Cesium Cation Identified).`;
+        showPpt("orange", 0.8);
+    }
+}
+
+// **Silver Identification - HCl Test**
+else if (salt.cation === 'Silver' && content.includes("Dil HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `White precipitate (Silver Cation Identified).`;
+    showPpt("white", 0.8);
+}
+
+// **Silver Confirmation - Ammonia Test**
+else if (salt.cation === 'Silver' && content.includes("NH₄OH") && content.includes("H₂O")) {
+    resultDiv.innerText = `Precipitate dissolves in excess NH₄OH (Silver Cation Confirmed).`;
+}
+
+// **Nickel Identification - DMG Test**
+else if (salt.cation === 'Nickel' && content.includes("Dimethylglyoxime") && content.includes("H₂O")) {
+    resultDiv.innerText = `Bright red precipitate (Nickel Cation Identified).`;
+    showPpt("red", 0.8);
+}
+
+// **Cobalt Identification - Potassium Ferrocyanide Test**
+else if (salt.cation === 'Cobalt' && content.includes("K₄[Fe(CN)₆]") && content.includes("H₂O")) {
+    resultDiv.innerText = `Greenish-brown precipitate (Cobalt Cation Identified).`;
+    showPpt("#8B4513", 0.8);
+}
+
+else {
+    resultDiv.innerText = `No visible reaction detected.`;
+
+}
 }
 
 function resetLab() {

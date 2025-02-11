@@ -164,7 +164,7 @@ margin-top: 40px;}
     /* Adjust spacing */
     
     
-     /* Reduce space between letters */
+    letter-spacing: -1px; /* Reduce space between letters */
        /* Reduce space between words */
       /* Prevent line breaks */
 }
