@@ -133,6 +133,7 @@ h1, h2, h3 {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 
@@ -145,7 +146,7 @@ h1, h2, h3 {
     text-align: center; /* Centers text inside */
     color: white;
     font-size: 2px;
-    overflow-y: none;
+    overflow: hidden; 
     line-height: 5px;
     height: 20%;
     letter-spacing: -0.5px;
