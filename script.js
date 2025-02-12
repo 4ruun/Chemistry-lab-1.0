@@ -1,4 +1,5 @@
 let testTubeContent = [];
+let examMode = false;
 let watchGlassContent = [];
     let selectedSalt = "";
 //greenblue 100 , blue 160, pink 250
@@ -224,6 +225,7 @@ document.addEventListener('touchend', () => {
   risDragging = false;
   pisDragging = false;
   tisDragging = false;
+ 
 });
 
     function startTest() {
@@ -232,12 +234,7 @@ document.addEventListener('touchend', () => {
         document.querySelector('.start-screen').style.display = 'none';
     }
 
-    function selectSalt(salt) {
-        selectedSalt = salt;
-        document.getElementById('selected-salt').innerText = salt;
-        document.querySelector('.salt-selection').classList.add('hidden');
-        document.querySelector('.main-lab').classList.remove('hidden');
-    }
+    
 
     function startDrag(event) {
         event.dataTransfer.setData("text", event.target.dataset.chemical);
@@ -331,7 +328,20 @@ const salts = [
     { id: 15, name: 'Lead Nitrate', anion: 'Nitrate', cation: 'Lead' },
     { id: 16, name: 'Magnesium Chloride', anion: 'Chloride', cation: 'Magnesium' }
 ];
-
+function startExam() {
+        const randomIndex = Math.floor(Math.random() * salts.length); // Get a random index
+    const randomSalt = salts[randomIndex]; // Select a random salt
+    selectedSalt = randomSalt; // Store the selected salt
+    examMode = true;
+    document.getElementById('selected-salt').innerText = randomSalt.name;
+    
+    document.querySelector('.salt-selection').classList.add('hidden');
+    document.querySelector('.start-screen').classList.add('hidden');
+    document.querySelector('.start-screen').style.display = 'none';
+    document.querySelector('.main-lab').classList.remove('hidden');
+    
+}
+    
     function selectSalt(saltName) {
         const salt = salts.find(s => s.name === saltName);
         selectedSalt = salt;
@@ -373,6 +383,9 @@ const testTube = document.querySelector('.testtube');
 
 function analyzeWatchGlassReaction(content){
 	const resultDiv = document.getElementById('result');
+if (examMode){
+	  document.querySelector('result').classList.add('hidden');
+}
     const salt = selectedSalt;
     const watchglass = document.querySelector('.watchglass'); 
     const contents = document.querySelector('.content'); 
@@ -389,7 +402,7 @@ function analyzeWatchGlassReaction(content){
         resultDiv.innerText = `Vinegar smell detected (Acetate Anion identified).`;
         contents.style.backgroundImage = "url('paste.png')";
     }
-    else if (salt.cation === 'Calcium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+    else if (salt.cation === 'Calcium' && content.includes("Conc HCl")){
     resultDiv.innerText = `Brick red flame (Calcium Cation confirmed).`;
     hue = 0;          // Adjusted to pure red
 		brightness = 30;  // Reduced for darker appearance
@@ -397,7 +410,7 @@ function analyzeWatchGlassReaction(content){
 		contents.style.backgroundImage = "url('paste.png')";
 	}
 	
-else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+else if (salt.cation === 'Barium' && content.includes("Conc HCl")) {
     resultDiv.innerText = `Pale green flame  (Barium Cation confirmed).`;
     hue = 120;         // Green hue
     brightness = 125;   // High brightness for a pale look
@@ -407,6 +420,9 @@ else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.inc
 }
  function analyzeReaction(content) {
     const resultDiv = document.getElementById('result');
+    if (examMode){
+	  document.querySelector('result').classList.add('hidden');
+}
     const salt = selectedSalt;
     const testTube = document.querySelector('.testtube'); 
     const reactionLayer = testTube.querySelector('.brisk-reaction-layer');
@@ -623,13 +639,13 @@ else if (salt.cation === 'Sodium' && content.includes("NaOH") && content.include
 
 
 // Flame test
-else if (salt.cation === 'Calcium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+else if (salt.cation === 'Calcium' && content.includes("Conc HCl")) {
     resultDiv.innerText = `Brick red flame (Calcium Cation confirmed).`;
     hue = 0;          // Adjusted to pure red
 		brightness = 30;  // Reduced for darker appearance
 		contrast = 100;
 }
-else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+else if (salt.cation === 'Barium' && content.includes("Conc HCl")) {
     resultDiv.innerText = `Pale green flame  (Barium Cation confirmed).`;
     hue = 120;         // Green hue
     brightness = 125;   // High brightness for a pale look
