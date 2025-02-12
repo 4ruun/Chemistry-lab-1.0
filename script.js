@@ -1,4 +1,5 @@
 let testTubeContent = [];
+let watchGlassContent = [];
     let selectedSalt = "";
 //greenblue 100 , blue 160, pink 250
 
@@ -17,6 +18,39 @@ let hue = 360;
 let brightness = 100;
 let contrast = 100;
 let ashcolor = "brown-ash.png"; // Correct way to represent an array of numbers
+const watchglass = document.querySelector('.watchglass');
+let wisDragging = false;
+
+watchglass.addEventListener('touchstart', (e) => {
+    wisDragging = true;
+    watchglass.dataset.offsetX = e.touches[0].clientX - watchglass.offsetLeft;
+    watchglass.dataset.offsetY = e.touches[0].clientY - watchglass.offsetTop;
+    e.preventDefault();
+});
+
+document.addEventListener('touchmove', (e) => {
+    if (wisDragging) {
+        e.preventDefault();
+        const offsetX = watchglass.dataset.offsetX;
+        const offsetY = watchglass.dataset.offsetY;
+
+        watchglass.style.position = "absolute";
+        watchglass.style.left = `${e.touches[0].clientX - offsetX}px`;
+        watchglass.style.top = `${e.touches[0].clientY - offsetY}px`;
+    }
+});
+
+document.addEventListener('touchend', () => {
+    wisDragging = false;
+});
+
+// Drop chemical into watch glass
+
+
+// Allow dropping
+watchglass.addEventListener("dragover", (event) => event.preventDefault());
+watchglass.addEventListener("drop", dropChemicalToWatchGlass);
+
 
 function changeHue(hue, brightness, contrast) {
   circle.style.filter = `hue-rotate(${hue}deg) brightness(${brightness}%) contrast(${contrast}%)`;
@@ -70,7 +104,8 @@ document.addEventListener('touchmove', (e) => {
     const stickRect = stick.getBoundingClientRect();
     const circleRect = circle.getBoundingClientRect();
     const testTubeRect = testtube.getBoundingClientRect();
-
+    const watchglass = document.querySelector('.watchglass');
+const watchGlassRect = watchglass.getBoundingClientRect();
     if (
       stickRect.top < circleRect.bottom &&
       stickRect.bottom > circleRect.top &&
@@ -85,10 +120,10 @@ document.addEventListener('touchmove', (e) => {
     }
 
     if (
-      stickRect.bottom > testTubeRect.top &&
-      stickRect.top < testTubeRect.top &&
-      testTubeRect.left < stickRect.right &&
-      testTubeRect.right > stickRect.left
+      stickRect.bottom > watchGlassRect.top &&
+      stickRect.top < watchGlassRect.top &&
+      watchGlassRect.left < stickRect.right &&
+      watchGlassRect.right > stickRect.left
     ) {
       rdipped = true;
       setTimeout(() => {
@@ -214,7 +249,24 @@ document.addEventListener('touchend', () => {
 
 let currentHeight = 0;
 const MAX_HEIGHT = 160;
+function dropChemicalToWatchGlass(event) {
+    event.preventDefault();
+    const chemical = event.dataTransfer.getData("text");
+    const watchglass = document.querySelector('.watchglass');
+    const contentDiv = watchglass.querySelector('.content');
 
+    if (!chemical) return;
+watchGlassContent.unshift(chemical);
+    const newChemicalDiv = document.createElement('div');
+    newChemicalDiv.innerText = chemical;
+    
+    newChemicalDiv.style.height = '17px';
+    
+    contentDiv.appendChild(newChemicalDiv);
+    contentDiv.scrollTop = contentDiv.scrollHeight;
+
+    analyzeWatchGlassReaction(watchGlassContent);
+}
 function dropChemical(event) {
     event.preventDefault();
     const chemical = event.dataTransfer.getData("text");
@@ -339,7 +391,40 @@ const testTube = document.querySelector('.testtube');
     pptLayer.style.backgroundColor = colour; pptLayer.style.opacity = thickness;
 }
 
-
+function analyzeWatchGlassReaction(content){
+	const resultDiv = document.getElementById('result');
+    const salt = selectedSalt;
+    const watchglass = document.querySelector('.watchglass'); 
+    const contents = document.querySelector('.content'); 
+    
+    if (!content.includes('Salt')) {
+        resultDiv.innerText = "";
+        return;}
+        else {
+        	contents.style.backgroundImage = "url('salt.png')";
+     }
+      
+    // **Carbonate Anion Test** (Sodium Carbonate / Ammonium Carbonate)
+     if (salt.anion === 'Acetate' && content.includes("Dil H₂SO₄")) {
+        resultDiv.innerText = `Vinegar smell detected (Acetate Anion identified).`;
+        contents.style.backgroundImage = "url('paste.png')";
+    }
+    else if (salt.cation === 'Calcium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Brick red flame (Calcium Cation confirmed).`;
+    hue = 0;          // Adjusted to pure red
+		brightness = 30;  // Reduced for darker appearance
+		contrast = 100;
+		contents.style.backgroundImage = "url('paste.png')";
+}
+else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
+    resultDiv.innerText = `Pale green flame  (Barium Cation confirmed).`;
+    hue = 120;         // Green hue
+    brightness = 125;   // High brightness for a pale look
+    contrast = 80;  
+    contents.style.backgroundImage = "url('paste.png')";
+}
+   
+}
  function analyzeReaction(content) {
     const resultDiv = document.getElementById('result');
     const salt = selectedSalt;

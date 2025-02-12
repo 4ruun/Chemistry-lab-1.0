@@ -135,6 +135,8 @@ h1, h2, h3 {
     align-items: center;
 }
 
+
+
 .watchglass .content {
     position: absolute;
     top: 54%; /* Adjusts position slightly above center */
@@ -149,6 +151,9 @@ h1, h2, h3 {
     letter-spacing: -0.5px;
      /* Light background for visibility */
     padding: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     
 }
 /* Test Tube */
@@ -247,6 +252,7 @@ h1, h2, h3 {
     background-image: url('rod.png');
     transform: translate(260px, 50%) rotate(20deg);
     cursor: grab;
+    
 }
 
 /* Paper */
