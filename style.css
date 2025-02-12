@@ -121,9 +121,39 @@ h1, h2, h3 {
     background-image: url('nh3rod.png');
 }
 
+.watchglass {
+    width: 170px;
+    height: 160px;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('watchglass.png');
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.watchglass .content {
+    position: absolute;
+    top: 54%; /* Adjusts position slightly above center */
+    transform: translateY(-50%); /* Centers vertically */
+    width: 30%; /* Adjust width for better appearance */
+    text-align: center; /* Centers text inside */
+    color: white;
+    font-size: 2px;
+    overflow-y: none;
+    line-height: 5px;
+    height: 20%;
+    letter-spacing: -0.5px;
+     /* Light background for visibility */
+    padding: 5px;
+    
+}
 /* Test Tube */
 .testtube {
-    width: 30px;
+    width: 23px;
     height: 130px;
     margin: 50px auto;
     position: relative;
@@ -160,11 +190,11 @@ h1, h2, h3 {
 .content {
     position: absolute;
     bottom: 0;
-    width: 176%;
+    width: 196%;
     color: white;
     font-size: 6px;
     overflow-y: auto;
-    transform: scale(0.5) translateX(-24px);
+    transform: scale(0.5) translateX(-23px);
     line-height: 7px;
     transition: height 0.3s ease;
     letter-spacing: -1px;
