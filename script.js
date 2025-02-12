@@ -329,11 +329,14 @@ const salts = [
     { id: 16, name: 'Magnesium Chloride', anion: 'Chloride', cation: 'Magnesium' }
 ];
 function startExam() {
+    	examMode = true;
+       
         const randomIndex = Math.floor(Math.random() * salts.length); // Get a random index
     const randomSalt = salts[randomIndex]; // Select a random salt
     selectedSalt = randomSalt; // Store the selected salt
-    examMode = true;
+    
     document.getElementById('selected-salt').innerText = randomSalt.name;
+    document.getElementById('selected-salt').style.opacity = 0.0;
     
     document.querySelector('.salt-selection').classList.add('hidden');
     document.querySelector('.start-screen').classList.add('hidden');
