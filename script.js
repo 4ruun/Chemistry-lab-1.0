@@ -313,44 +313,24 @@ function AddChemical(chemicalName) {
 
     dropChemical(mockEvent); // Call the existing dropChemical function
 }
-    const salts = [
-        { id: 1, name: 'Sodium Nitrate', anion: 'Nitrate', cation: 'Sodium' },
-        { id: 2, name: 'Sodium Chloride', anion: 'Chlorine', cation: 'Sodium' },
-        { id: 3, name: 'Sodium Sulphate', anion: 'Sulfate', cation: 'Sodium' },
-        { id: 4, name: 'Sodium Carbonate', anion: 'Carbonate', cation: 'Sodium' },
-        { id: 5, name: 'Ammonium Carbonate', anion: 'Carbonate', cation: 'Ammonium' },
-        { id: 6, name: 'Sodium Acetate', anion: 'Acetate', cation: 'Sodium' },
-        { id: 7, name: 'Lead Nitrate', anion: 'Nitrate', cation: 'Lead' 
-        },
-        { id: 8, name: 'Aluminium Chloride', anion: 'Chlorine', cation: 'Aluminium' 
-        },
-        { id: 9, name: 'Copper Chloride', anion: 'Chlorine', cation: 'Copper' 
-        },
- { 
-    id: 10, 
-    name: 'Barium Chloride', 
-    anion: 'Chlorine', 
-    cation: 'Barium' 
-},
-{ 
-    id: 11, 
-    name: 'Zinc Sulphate', 
-    anion: 'Sulphate', 
-    cation: 'Zinc' 
-},
-{ 
-    id: 12, 
-    name: 'Calcium Chloride', 
-    anion: 'Chlorine', 
-    cation: 'Calcium' 
-},
-{ 
-    id: 13, 
-    name: 'Magnesium Chloride', 
-    anion: 'Chlorine', 
-    cation: 'Magnesium' 
-},
-    ];
+const salts = [
+    { id: 1, name: 'Ammonium Carbonate', anion: 'Carbonate', cation: 'Ammonium' },
+    { id: 2, name: 'Ammonium Chloride', anion: 'Chloride', cation: 'Ammonium' },
+    { id: 3, name: 'Ammonium Acetate', anion: 'Acetate', cation: 'Ammonium' },
+    { id: 4, name: 'Barium Acetate', anion: 'Acetate', cation: 'Barium' },
+    { id: 5, name: 'Zinc Acetate', anion: 'Acetate', cation: 'Zinc' },
+    { id: 6, name: 'Zinc Sulphate', anion: 'Sulphate', cation: 'Zinc' },
+    { id: 7, name: 'Calcium Chloride', anion: 'Chloride', cation: 'Calcium' },
+    { id: 8, name: 'Barium Chloride', anion: 'Chloride', cation: 'Barium' },
+    { id: 9, name: 'Magnesium Nitrate', anion: 'Nitrate', cation: 'Magnesium' },
+    { id: 10, name: 'Calcium Acetate', anion: 'Acetate', cation: 'Calcium' },
+    { id: 11, name: 'Aluminium Sulphate', anion: 'Sulphate', cation: 'Aluminium' },
+    { id: 12, name: 'Lead Acetate', anion: 'Acetate', cation: 'Lead' },
+    { id: 13, name: 'Aluminium Nitrate', anion: 'Nitrate', cation: 'Aluminium' },
+    { id: 14, name: 'Ammonium Sulphate', anion: 'Sulphate', cation: 'Ammonium' },
+    { id: 15, name: 'Lead Nitrate', anion: 'Nitrate', cation: 'Lead' },
+    { id: 16, name: 'Magnesium Chloride', anion: 'Chloride', cation: 'Magnesium' }
+];
 
     function selectSalt(saltName) {
         const salt = salts.find(s => s.name === saltName);
@@ -396,13 +376,13 @@ function analyzeWatchGlassReaction(content){
     const salt = selectedSalt;
     const watchglass = document.querySelector('.watchglass'); 
     const contents = document.querySelector('.content'); 
-    
+    contents.style.backgroundImage = "url('paste.png')";
     if (!content.includes('Salt')) {
         resultDiv.innerText = "";
-        return;}
-        else {
-        	contents.style.backgroundImage = "url('salt.png')";
-     }
+        return;
+    }
+    else{contents.style.backgroundImage = "url('salt.png')";}
+        
       
     // **Carbonate Anion Test** (Sodium Carbonate / Ammonium Carbonate)
      if (salt.anion === 'Acetate' && content.includes("Dil H₂SO₄")) {
@@ -415,7 +395,8 @@ function analyzeWatchGlassReaction(content){
 		brightness = 30;  // Reduced for darker appearance
 		contrast = 100;
 		contents.style.backgroundImage = "url('paste.png')";
-}
+	}
+	
 else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.includes("H₂O")) {
     resultDiv.innerText = `Pale green flame  (Barium Cation confirmed).`;
     hue = 120;         // Green hue
@@ -423,7 +404,6 @@ else if (salt.cation === 'Barium' && content.includes("Conc HCl") && content.inc
     contrast = 80;  
     contents.style.backgroundImage = "url('paste.png')";
 }
-   
 }
  function analyzeReaction(content) {
     const resultDiv = document.getElementById('result');
