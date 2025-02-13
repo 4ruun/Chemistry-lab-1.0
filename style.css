@@ -1,29 +1,74 @@
 /* General Styles */
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    background-image: url('school-bg.jpg');
+    background-image: url('lab-bg.jpg');
     
     background-size: cover; background-repeat: no-repeat; background-position: center; width: 100%; height: 100%;
     margin: 0;
     padding: 0;
     text-align: center;
 }
-
-/* Headings */
-h1, h2, h3 {
-    margin: 10px;
-    color:white;
+@font-face {
+    font-family: 'KGBrokenVesselsSketch';
+    src: url('fonts/KGBrokenVesselsSketch.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
+/* Apply the font */
+
+h1,h2, h3{
+	transform: translateY(-150px);
+}
+/* Headings */
+h2, h3{
+	font-size: 15px;
+    margin: 10px ;
+    color:white;
+    text-shadow: 1px 1px 2px black, 0 0 0px black, 0 0 5px darkblue;
+}
+h3{
+transform: translateY(-200px);
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
+
+h1 {
+    font-family: 'Rock Salt', cursive;
+font-size: 24px;
+    margin: 10px ;
+    color:white;
+}
 /* Hidden Elements */
 .hidden {
     display: none;
 }
-
-/* Button Styling */
 .button {
     padding: 12px 24px;
     margin: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+/* Button Styling */
+.mainbutton-container {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Space between buttons */
+}
+
+.mainbutton {
+    transform: translateY(-140px);
+    padding: 12px 24px;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
